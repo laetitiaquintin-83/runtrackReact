@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
+import WeatherCard from './components/WeatherCard'; // On importe notre petite brique d'affichage
 
 function App() {
-  const [ville, setVille] = useState(''); // Ce que l'utilisateur tape
-  const [meteo, setMeteo] = useState(null); // Les résultats de l'API
+  const [ville, setVille] = useState('');
+  const [meteo, setMeteo] = useState(null);
 
   const chercherMeteo = () => {
     const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
@@ -18,7 +19,7 @@ function App() {
           alert("Ville non trouvée !");
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error("Erreur :", err));
   };
 
   return (
@@ -26,11 +27,11 @@ function App() {
       <h1>Ma Météo Dynamique 🌍</h1>
 
       <div style={{ marginBottom: '20px' }}>
-        <input
-          type="text"
-          placeholder="Entrez une ville..."
+        <input 
+          type="text" 
+          placeholder="Entrez une ville..." 
           value={ville}
-          onChange={(e) => setVille(e.target.value)} // Met à jour le texte au fur et à mesure
+          onChange={(e) => setVille(e.target.value)}
           style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
         />
         <button onClick={chercherMeteo} style={{ padding: '10px 20px', marginLeft: '10px', cursor: 'pointer' }}>
@@ -38,14 +39,8 @@ function App() {
         </button>
       </div>
 
-      {meteo && (
-        <div className="weather-card" style={{ background: '#f0f0f0', padding: '20px', borderRadius: '15px', display: 'inline-block' }}>
-          <h2>{meteo.name}</h2>
-          <p style={{ fontSize: '2rem' }}>{Math.round(meteo.main.temp)}°C</p>
-          <p>{meteo.weather[0].description}</p>
-          <img src={`http://openweathermap.org/img/wn/${meteo.weather[0].icon}@2x.png`} alt="icon" />
-        </div>
-      )}
+      {/* On utilise le composant WeatherCard et on lui passe les données reçues */}
+      {meteo && <WeatherCard data={meteo} />}
     </div>
   );
 }
